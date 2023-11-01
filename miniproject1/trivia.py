@@ -1,7 +1,7 @@
 import random, starcraft, question
 
 questions = starcraft.trivia_pool()
-#rightanswers = 0
+
 correctanswers = 0
 totalanswers = 0
 totalquestions = len(questions)
