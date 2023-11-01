@@ -17,7 +17,7 @@ def main():
         "weapon": "Red Lightsaber",
     }
 
-    print("Choose a key of the list: ")
+    print("Choose a key from the list: ")
     print(dict.keys())
 
     userinput = input()
