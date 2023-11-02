@@ -10,6 +10,8 @@ def trivia_pool():
                            [ "They become wild and attack everything", "They kamakaze the nearest enemy unit", "They detonate", "They fly to another Carrier with open slots"], [ 2 ]),
         question.Question("The Zerg Guardian can only attack one kind of unit. Which is it?",
                            [ "Air", "Ground", "Cloaked", "Seaworthy"], [ 1 ]),
+        question.Question("What colour are minerals in StarCraft?",
+                           [ "Gray", "Green", "Purple", "Blue"], [ 3 ]),
     ]
 
 
