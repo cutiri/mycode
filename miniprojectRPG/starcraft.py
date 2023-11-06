@@ -27,30 +27,34 @@ class StarCraftRPG:
         self.message = []
         self.companions = []
         self.color = color.Color()
+        self.hp = 100
 
-        
+    def printMessage(self):
+        if len(self.message) > 0:
+            print('---------------------------------------------------------------------------------')
+            for line in self.message:
+                print(line)
 
     def showStatus(self):
-        print('---------------------------')
+        print('---------------------------------------------------------------------------------')
         print('You are in the ' + color.Color.RED +  self.currentRoom.name + color.Color.RESET)
-        print(color.Color.PURPLE + self.currentRoom.description)
+        print(color.Color.GREEN + self.currentRoom.description + color.Color.RESET)
         # print what the player is carrying
-        print('Inventory:', self.inventory)
+        print(color.Color.DARK_GRAY + 'Inventory:' + color.Color.RESET + str(self.inventory) )
+        print(color.Color.DARK_GRAY + 'Companions:' + color.Color.RESET + str(self.companions) )
         # check if there's an item in the room, if so print it
-        print('You see: ', self.currentRoom.getItemsAsString())
-        print('Available directions: ', self.currentRoom.getPossibleDestinationNames(self.inventory))
-        print('Ally units: ', self.currentRoom.getAllyUnits())
-        print('Enemy units: ', self.currentRoom.getEnemyUnits())
+        print(color.Color.DARK_GRAY + 'You see: ' + color.Color.RESET +  str(self.currentRoom.getItemsAsString()))
+        print(color.Color.DARK_GRAY + 'Available directions: ' + color.Color.RESET + self.currentRoom.getPossibleDestinationNames(self.inventory))
+        print(color.Color.DARK_GRAY + 'Ally units: ' + color.Color.RESET +  str(self.currentRoom.getAllyUnits()))
+        print(color.Color.DARK_GRAY + 'Enemy units: ' + color.Color.RESET + str(self.currentRoom.getEnemyUnits()))
     
     def runGame(self):
-        
-        print("")
-        while True:
+        while self.hp > 0:
             os.system('cls')
             os.system('clear')
-            self.printMessage(self.message)
-            self.message = []
+            self.printMessage()
             self.showStatus()
+            self.message = []
 
             move = ''
             while move == '':  
@@ -60,18 +64,22 @@ class StarCraftRPG:
             action = moveList[0]
             target = moveList[1] if len(moveList) > 1 else ""
             self.commands[action].method(target)
-
+            if self.init.winningConditionsMet():
+                break
+        
+        self.endGame()
 
     ##### COMMANDS: ######
 
     def goCommand(self, param):
-        print("go with param" + param)
         gate = self.currentRoom.getGateByName(param)
         if gate:
             if gate.canOpen(self.inventory):
                 self.currentRoom = self.currentRoom.getGateByName(param).room
             else:
                 self.message = ["You can't go there..."]
+        else:
+            self.message = ["That is not a valid direction, try again."]
 
     def getCommand(self, param):
         print('get with param' + param)
@@ -85,7 +93,18 @@ class StarCraftRPG:
             
     
     def attackCommand(self, param):
-        print('attack with param' + param)
+        targetUnit = self.currentRoom.getUnitByName(param)
+        if not targetUnit:
+            self.message = ["Are you sure you typed that right?"]
+        elif targetUnit.isFriendly:
+            self.message = ["You can't attack allied units, are you out of your mind?"]
+        elif not targetUnit.attack(self.inventory, self.companions):
+            self.message = targetUnit.failedInteractionMessage
+            self.hp = -1
+        else:
+            self.message = targetUnit.successfulInteractionMessage
+            self.currentRoom.units.remove(targetUnit)
+            self.currentRoom.items += targetUnit.drop
 
     def assistCommand(self, param):
         targetUnit = self.currentRoom.getUnitByName(param)
@@ -93,17 +112,15 @@ class StarCraftRPG:
             self.message = ["Are you sure you typed that right?"]
         elif not targetUnit.isFriendly:
             self.message = ["You can't assist enemy units"]
-        elif not targetUnit.assist():
-            self.message = ["You are missing an item to assist ", targetUnit.name, " keep looking around."]
+        elif not targetUnit.assist(self.inventory):
+            self.message = targetUnit.failedInteractionMessage
         else:
-            self.message = [targetUnit.successfulInteractionMessage]
+            self.message = targetUnit.successfulInteractionMessage
             self.companions.append(targetUnit)
-            del self.currentRoom.units[targetUnit]
+            self.currentRoom.units.remove(targetUnit)
+            for item in targetUnit.needs:
+                self.inventory.remove(item)
             
-
-    def printMessage(self, message):
-        for line in message:
-            print(line)
 
     def helpCommand(self, param):
         self.message = ["--------------------------------------------------------------------------"]
@@ -115,3 +132,12 @@ class StarCraftRPG:
     def cheatCommand(self, param):
         if param.lower() == "show me the money":
             self.inventory = self.inventory + self.init.items
+    
+    def endGame(self):
+        self.printMessage()
+        if self.hp <= 0:
+            print(self.init.looseMessage)
+        if self.hp > 0:
+            print(self.init.winningMessage)
+        
+        input("Press Enter to close the game...")

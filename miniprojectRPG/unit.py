@@ -16,7 +16,13 @@ class Unit:
         self.needs = needs
         pass
 
-    def attackedBy(self, inventory, companions):
+    def attack(self, inventory, companions):
+        if self.isFriendly:
+            return False
+        if self.killableByItem and self.killableByItem not in inventory:
+                return False
+        if self.killableByUnit and self.killableByUnit not in companions:
+                return False
         return True
     
     #gets executed when trying to assist

@@ -32,7 +32,7 @@ class Room:
     
     def getItemByName(self, itemName):
         for item in self.items:
-            if item == itemName:
+            if item.name.lower() == itemName:
                 return item
         return None
     
@@ -56,7 +56,7 @@ class Room:
         lenght = len(visibleGates)
 
         if lenght == 0:
-            return None
+            return ""
         if lenght == 1:
             return visibleGates[0].direction
         destinations = visibleGates[0].direction        
@@ -92,7 +92,8 @@ class Room:
 
 if __name__ == "__main__":
     item = item.Item("key", "No desc", "Just a key")
-    room = Room("Living", "Just the living", [], [])
-    room = Room("Kitchen", "Just the kitchen", [], [])
+    room1 = Room("Living", "Just the living", [], [])
+    room2 = Room("Kitchen", "Just the kitchen", [], [])
 
-    gate = gate.Gate("east", )
+    #gate = gate.Gate("east", )
+    print(room1.getPossibleDestinationNames([]))
