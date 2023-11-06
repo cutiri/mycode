@@ -30,19 +30,16 @@ class GameInitializer:
                                "you fall to the ground and soon loose conciousness."],
                               [keycard], [])
         hydralisk = unit.Unit("Hydralisk", False, None, rifle, 
-                              ["As you aim your C-14 Impaler at the Hydralisk and open fire, the hideous creature deftly dodges your bullets and charges toward you.",
-                               "In the nick of time, you hear the unmistakable sound of a C-20 Canister rifle.","A massive hole appears in the Hydralisk's chest, and it crumples to the ground, lifeless.",
-                               "As you try to understabd what happned you hear a familiar voice:",
+                              ["As you aim your C-14 Impaler at the Hydralisk and open fire, the hideous creature dodges your bullets and charges toward  you.",
+                               "Then you hear the unmistakable sound of a C-20 Canister rifle.",
+                               "A massive hole appears in the Hydralisk's chest, and it crumples to the ground, lifeless.",
+                               "As you try to understand what happened, you hear a familiar voice:",
                                color.Color.PURPLE + "Sarah:" + color.Color.RESET + " Jim?"],
                               ["Driven by an inexplicable surge of determination, you charge the Hydralisk unarmed.",
                                "It gazes at you with bewilderment before spitting a corrosive stream of acid into your face.",
                                "Agonizing pain surges through you, and in your final moments, you hear Sarah's voice echoing, questioning your seemingly irrational decision:",
                                color.Color.PURPLE + "Sarah:" + color.Color.RESET + " Jim, you are such a noob!!!"],
                               [], [])
-
-        #khaydarin = item.Item("khaydarin", "A piece of Khaydarin Crystal, it's blue and shinny", "")
-        #keycard = item.Item("Key Card", "A bloody key card, a name is still visible, it belonged to Edmund Duke", "")
-        #rifle = item.Item("rifle", "A C-14 Impaler gauss rifle, is the standard marine rifle", "")
         marineSuit = item.Item("Suit", "CMC Powered Combat Suit", [
             "You finish putting on the combat suit. Suddenly, the radio crackles to life, and a familiar voice emerges from the speakers.",
             color.Color.PURPLE + "Sarah:" + color.Color.RESET + " This is Kerrigan, there are zergs advancing to our positions, we need immediat evac!",
