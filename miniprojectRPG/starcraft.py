@@ -40,13 +40,13 @@ class StarCraftRPG:
         print('You are in the ' + color.Color.RED +  self.currentRoom.name + color.Color.RESET)
         print(color.Color.GREEN + self.currentRoom.description + color.Color.RESET)
         # print what the player is carrying
-        print(color.Color.DARK_GRAY + 'Inventory:' + color.Color.RESET + str(self.inventory) )
-        print(color.Color.DARK_GRAY + 'Companions:' + color.Color.RESET + str(self.companions) )
+        print(color.Color.LIGHT_GRAY + 'Inventory:' + color.Color.RESET + str(self.inventory) )
+        print(color.Color.LIGHT_GRAY + 'Companions:' + color.Color.RESET + str(self.companions) )
         # check if there's an item in the room, if so print it
-        print(color.Color.DARK_GRAY + 'You see: ' + color.Color.RESET +  str(self.currentRoom.getItemsAsString()))
-        print(color.Color.DARK_GRAY + 'Available directions: ' + color.Color.RESET + self.currentRoom.getPossibleDestinationNames(self.inventory))
-        print(color.Color.DARK_GRAY + 'Ally units: ' + color.Color.RESET +  str(self.currentRoom.getAllyUnits()))
-        print(color.Color.DARK_GRAY + 'Enemy units: ' + color.Color.RESET + str(self.currentRoom.getEnemyUnits()))
+        print(color.Color.LIGHT_GRAY + 'You see: ' + color.Color.RESET +  str(self.currentRoom.getItemsAsString()))
+        print(color.Color.LIGHT_GRAY + 'Available directions: ' + color.Color.RESET + self.currentRoom.getPossibleDestinationNames(self.inventory))
+        print(color.Color.LIGHT_GRAY + 'Ally units: ' + color.Color.RESET +  str(self.currentRoom.getAllyUnits()))
+        print(color.Color.LIGHT_GRAY + 'Enemy units: ' + color.Color.RESET + str(self.currentRoom.getEnemyUnits()))
     
     def runGame(self):
         while self.hp > 0:
