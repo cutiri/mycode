@@ -1,5 +1,6 @@
 import item, room, gate, command, unit, textcolor as color
 
+
 class GameInitializer:
     def __init__(self) -> None:
         khaydarin = item.Item("crystal", "A piece of Khaydarin Crystal, it's blue and shinny", ["You pick up the crystal, it is blue and shinny"])

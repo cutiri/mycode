@@ -7,9 +7,12 @@ def main():
 
     shutil.move("raynor.obj", "ceph_storage/")
 
-    xname = input('What is the new name for kerrigan.obj? ')
+    xname:str = input('What is the new name for kerrigan.obj? ')
     shutil.move('ceph_storage/kerrigan.obj', 'ceph_storage/' + xname)
 
 
 if __name__ == "__main__":
     main()
+
+def test(n1: str, n2: int):
+    pass
