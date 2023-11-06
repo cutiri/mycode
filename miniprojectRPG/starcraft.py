@@ -50,8 +50,9 @@ class StarCraftRPG:
     
     def runGame(self):
         while self.hp > 0:
-            os.system('cls')
-            os.system('clear')
+            #os.system('cls')
+            #os.system('clear')
+            os.system('cls' if os.name == 'nt' else 'clear')
             self.printMessage()
             self.showStatus()
             self.message = []
@@ -63,7 +64,11 @@ class StarCraftRPG:
             moveList = move.lower().split(" ", 1)
             action = moveList[0]
             target = moveList[1] if len(moveList) > 1 else ""
-            self.commands[action].method(target)
+            
+            if action in self.commands:
+                self.commands[action].method(target)
+            else:
+                self.message = [action + " is not a valid command"]
             if self.init.winningConditionsMet():
                 break
         
@@ -132,6 +137,9 @@ class StarCraftRPG:
     def cheatCommand(self, param):
         if param.lower() == "show me the money":
             self.inventory = self.inventory + self.init.items
+            self.companions = self.companions + self.init.companions
+        if param.lower() == "there is no cow level":
+            self.currentRoom = self.init.bunker
     
     def endGame(self):
         self.printMessage()

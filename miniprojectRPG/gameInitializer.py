@@ -21,12 +21,17 @@ class GameInitializer:
                             , color.Color.RED + "Oh yeeaaahh... Go ahead commander." + color.Color.RESET],
                             ["You need something else"], [], [stimpack])
         zerglings = unit.Unit("Zerglings", False, firebat, None, 
-                              ["With a swift, precise sweep of his flamethrower, your fellow Firebat incinerates the charging Zerglings, turning them into ashes in the blink of an eye. Then you see a keycard one of them was chewing."], 
-                              ["You start shooting at the zerglings but they are too many and soon overwealm you, one of them is able to reach you and stab you in the chest, you fall to the ground and soon loose conciousness."],
+                              ["With a swift, precise sweep of his flamethrower",
+                               "your fellow Firebat incinerates the charging Zerglings",
+                               "turning them into ashes in the blink of an eye.",
+                               "Then you see a keycard one of them was chewing."], 
+                              ["You start shooting at the Zerglings but they are too many and soon overwealm you",
+                               "one of them is able to reach you and stab you in the chest",
+                               "you fall to the ground and soon loose conciousness."],
                               [keycard], [])
         hydralisk = unit.Unit("Hydralisk", False, None, rifle, 
                               ["As you aim your C-14 Impaler at the Hydralisk and open fire, the hideous creature deftly dodges your bullets and charges toward you.",
-                               "In the nick of time, you hear the unmistakable sound of a C-20 Canister rifle. A massive hole appears in the Hydralisk's chest, and it crumples to the ground, lifeless.",
+                               "In the nick of time, you hear the unmistakable sound of a C-20 Canister rifle.","A massive hole appears in the Hydralisk's chest, and it crumples to the ground, lifeless.",
                                "As you try to understabd what happned you hear a familiar voice:",
                                color.Color.PURPLE + "Sarah:" + color.Color.RESET + " Jim?"],
                               ["Driven by an inexplicable surge of determination, you charge the Hydralisk unarmed.",
@@ -50,7 +55,7 @@ class GameInitializer:
             color.Color.PURPLE + "Sarah:" + color.Color.RESET + " Commander? Jim? What the hell is going on up there? .... *radio silence*"
         ])
 
-        self.items = [khaydarin, keycard, rifle, stimpack, marineSuit]
+        
 
         battlecruiser = room.Room("Battle Crusier", "A standard Terran Battlecruiser orbiting planet Tarsonis.", [marineSuit], [])
         startport = room.Room("Startport", "You are inside the main startport on planet Tarsonis.", [rifle], [])
@@ -72,6 +77,10 @@ class GameInitializer:
 
         self.winningMessage = color.Color.CYAN + "Congratulations! You were able to assist Sarah! Wasn't that hard right? Right Blizzard?" + color.Color.RESET
         self.looseMessage = color.Color.CYAN + "----- GAME OVER -----" + color.Color.RESET
+
+        self.items = [khaydarin, keycard, rifle, stimpack, marineSuit]
+        self.companions = [marine, firebat]
+        self.finalRoom = self.bunker
 
     def winningConditionsMet(self):
         return len(self.bunker.units) == 0
