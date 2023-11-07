@@ -31,7 +31,8 @@ def main():
     for item in items.get("results"):
         # check to see if the current item's VALUE mapped to item["name"]
         # contains the search word
-        if args.searchword in item.get("name"):
+        name = item.get('name')
+        if args.searchword in item.get("name") and len(name) >= int(args.characters):
             # if TRUE, add that item to the end of list matchedwords
             matchedwords.append(item.get("name"))
 
@@ -55,6 +56,8 @@ def main():
     # being written into the data
     itemsdf.to_excel("pokemonitems.xlsx", index=False)
 
+    itemsdf.to_json("pokemonitems.json")
+
     print("Gotta catch 'em all!")
 
 if __name__ == "__main__":
@@ -62,5 +65,6 @@ if __name__ == "__main__":
     the Pokemon item API")
     parser.add_argument('--searchword', metavar='SEARCHW',\
     type=str, default='ball', help="Pass in any word. Default is 'ball'")
+    parser.add_argument('--characters', type=int, default='5', help="Pass minimum amount of characters")
     args = parser.parse_args()
     main()
