@@ -35,5 +35,9 @@ def main():
             book = request.json()
             pprint.pprint(book.get("name"))
 
+        print("Name:")
+        name = got_dj.get("name") if got_dj.get("name") != "" else got_dj.get("aliases")[0]
+        print(name)
+
 if __name__ == "__main__":
         main()
