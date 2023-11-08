@@ -10,10 +10,10 @@ URL= "https://opentdb.com/api.php?amount=10&category=15"
 
 
 def display_question(question):
-    pprint.pprint(question.get('question'))
+    pprint.pprint(html.unescape(question.get('question')))
     if question.get("type") == 'multiple':
         pprint.pprint('Select the correct answer:')
-        correct_answer_position = random.randint(0, len(html.unescape(question.get("incorrect_answers"))))
+        correct_answer_position = random.randint(0, len(question.get("incorrect_answers")))
         answers = question.get("incorrect_answers")
         answers.insert(correct_answer_position, question.get("correct_answer"))
         count = 1
