@@ -22,7 +22,7 @@ def display_question(question):
             count += 1
     elif question.get("type") == 'boolean':     
         pprint.pprint('Answer T or F:')
-        pprint.pprint(html.unescape(question.get('question')))
+        #pprint.pprint(html.unescape(question.get('question')))
 
 def main():
     # data will be a python dictionary rendered from your API link's JSON!
