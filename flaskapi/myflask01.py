@@ -22,6 +22,10 @@ def hello_world():
 def home():
    return "Home page"
 
+@app.route("/json")
+def json():
+   return {"name": "Angel", "lastname": "Villasante"}
+
 if __name__ == "__main__":
-   app.run(host="0.0.0.0", port=2224) # runs the application
+   app.run(host="0.0.0.0", port=2224, debug=True) # runs the application
    # app.run(host="0.0.0.0", port=2224, debug=True) # DEBUG MODE
