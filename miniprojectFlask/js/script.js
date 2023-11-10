@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:2224/api";
+const API_URL = "http://127.0.0.1:2224/api";
 const sendBtn = document.getElementById("send_btn");
 const mainInput = document.getElementById("command");
 let inputText = "";

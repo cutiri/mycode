@@ -36,7 +36,6 @@ class StarCraft:
         action = moveList[0]
         target = moveList[1] if len(moveList) > 1 else ""
 
-        print(action, " - ", target)
         if action and not target:
             keys = [item for item in self.commands.keys() if item.startswith(action) and item != action]
             result = { "results": keys}

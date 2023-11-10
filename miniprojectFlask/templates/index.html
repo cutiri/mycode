@@ -57,7 +57,7 @@
                         {% endfor %}
                         {% if not won and not gameover%}
                         <form method="POST" action="{{ url_for('command') }}" class="form-check" >
-                            <label for="Command">Command:</label>
+                            <label for="Command">Command (press Tab for autocompletion when possible)</label>
                             <input type="text" id="command" name="command" required class="form-control" autofocus>
                             <br>
                             <button type="submit">Execute</button>

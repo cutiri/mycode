@@ -27,9 +27,6 @@ database = db.DB()
 log = logger.Logger()
 bad_username = False
 
-#starcraft = starcraft.StarCraft()
-#gameStatus = starcraft.gameStatus
-#gameStatusDict = {}
 game_initializer = gameInitializer.GameInitializer()
 gamesDictionary = {}
 api_not_found_error =  {'error': 'Nothing found with that name'}
@@ -38,13 +35,9 @@ def getGame():
     return gamesDictionary.get(getUsername())
 
 def setGameStatus(username, gamestatus):
-    #gameStatusDict[username] = gamestatus
-    #print(gamesDictionary[username].gameStatus)
-    #print(gamestatus.convert_to_JSON())
     gamesDictionary[username].gameStatus = gamestatus
 
 def getGameStatus(username):
-    #return gameStatusDict.get(username)
     if gamesDictionary.get(username):
         return gamesDictionary.get(username).gameStatus
     return None
@@ -84,9 +77,7 @@ def login():
             log.log("User with username: '{0}' successfully authenticated.".format(username))
             session['username'] = username
             bad_username = False
-            #gameStatus = starcraft.start_game()
-            #setGameStatus(username, starcraft.start_game())
-            print(getGameStatus(getUsername()).convert_to_JSON())
+            
             return redirect(url_for('home'))
         else:
             log.log("User with username: '{0}' failed to authenticate.".format(username))
@@ -114,15 +105,12 @@ def newgame():
 @app.route("/api/autocomplete/<text>")
 def autocomplete(text):
     input_list = getGame().autocomplete(text)
-    #return { 'response': {input_list[i]: input_list[i + 1] for i in range(0, len(input_list), 2)}}
-    print(input_list)
     return jsonify(input_list)
 
 @app.route("/api/command/", methods=['POST'])
 def command():
     command = request.form['command']
     setGameStatus(getUsername(), getGame().execute_command(command))
-    #return render_template("index.html", gameStatus = getGameStatus(getUsername()))
     return redirect(url_for('home'))
 
 @app.route("/api/room/<name>")
@@ -147,5 +135,4 @@ def items():
 
 
 if __name__ == "__main__":
-   
    app.run(host="0.0.0.0", port=2224, debug=True) # runs the application
