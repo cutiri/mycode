@@ -6,7 +6,7 @@ from pprint import pprint
 def main():
     URL= "http://127.0.0.1:2224/api/"
 
-    resp = ''
+    resp = 'No data obtained...'
 
     if args.room:
         resp= requests.get(URL + 'room/' + args.room).json()

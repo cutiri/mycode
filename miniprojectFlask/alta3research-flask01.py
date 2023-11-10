@@ -104,7 +104,9 @@ def newgame():
 
 @app.route("/api/autocomplete/<text>")
 def autocomplete(text):
+    print("AUTOCOMPLETING")
     input_list = getGame().autocomplete(text)
+    print(input_list)
     return jsonify(input_list)
 
 @app.route("/api/command/", methods=['POST'])
