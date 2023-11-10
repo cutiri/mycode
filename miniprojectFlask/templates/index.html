@@ -7,38 +7,91 @@
     <title>Login</title>
 </head>
 <body>
-    {% if 'username' in session %}
-        <p>Hello, {{ session['username'] }}! <a href="{{ url_for('logout') }}">Logout</a></p>
-        <p><a href="{{ url_for('newgame') }}">New Game</a></p>
-        {% if gameStatus %}
-        <section>
-            <p> Room name: <b>{{ gameStatus.currentRoom.name }}</b></p>
-            <p> Room description: <b>{{ gameStatus.currentRoom.description }}</b></p>
-            <p> Items in this room: <b>{{ gameStatus.currentRoom.items }}</b></p>
-            <p> Possible directions: <b>{{ gameStatus.currentRoom.getPossibleDestinationNames(gameStatus.inventory) }}</b></p>
-            {% for message in gameStatus.message %}
-            <p> {{ message|safe }}</p>
-            {% endfor %}
-            <form method="POST" action="{{ url_for('command') }}" class="form-check" >
-                <label for="Command">Command:</label>
-                <input type="text" id="command" name="command" required class="form-control" autofocus>
-                <br>
-                <button type="submit">Execute</button>
-            </form>
-        </section>
-        {% endif %}
-    {% else %}
-        <h2>Login</h2>
-        <form method="POST" action="{{ url_for('login') }}" class="form-check" >
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required class="form-control {% if bad_username %}is-invalid{% endif %}" autofocus>
-            <br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required class="form-control {% if bad_username %}is-invalid{% endif %}">
-            <br>
-            <button type="submit">Login</button>
-        </form>
-    {% endif %}
+    
+    <section class="container">
+        <div class="row">
+            
+            <div class="col-md-12">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="container">
+                        <a class="navbar-brand" href="#">StarCraft RPG</a>
+                        <div class="row w-100">
+                        {% if 'username' in session %}
+                        <!-- Welcome Message (align to the left) -->
+                        <div class="col-md-6">
+                            <span class="navbar-text">Welcome, <b>{{ session['username'] }}!</b> </span>
+                        </div>
+                        <!-- Menu Items (align to the right) -->
+                        <div class="col-md-6 text-md-right">
+                            <ul class="navbar-nav">
+                            <!-- New Game Button -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('newgame') }}">New Game</a>
+                            </li>
+                            <!-- Help Button -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('help') }}">Help</a>
+                            </li>
+                            <!-- Logout Button -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                            </li>
+                            </ul>
+                        </div>
+                        {% endif %}
+                        </div>
+                    </div>
+                </nav>
+                {% if 'username' in session %}
+                    {% if gameStatus %}
+                    <section>
+                        <p> Room name: <b>{{ gameStatus.currentRoom.name }}</b></p>
+                        <p> Room description: <b>{{ gameStatus.currentRoom.description }}</b></p>
+                        <p> Your inventory: <b>{{ gameStatus.inventory }}</b></p>
+                        <p> your companions: <b>{{ gameStatus.companions }}</b></p>
+                        <p> Items in this room: <b>{{ gameStatus.currentRoom.items }}</b></p>
+                        <p> Units in this room: <b>{{ gameStatus.currentRoom.units }}</b></p>
+                        <p> Possible directions: <b>{{ gameStatus.currentRoom.getPossibleDestinationNames(gameStatus.inventory) }}</b></p>
+                        {% for message in gameStatus.message %}
+                        <p> {{ message|safe }}</p>
+                        {% endfor %}
+                        {% if not won and not gameover%}
+                        <form method="POST" action="{{ url_for('command') }}" class="form-check" >
+                            <label for="Command">Command:</label>
+                            <input type="text" id="command" name="command" required class="form-control" autofocus>
+                            <br>
+                            <button type="submit">Execute</button>
+                        </form>
+                        {% endif %}
+                        {% if won %}
+                            <p>Congratulations you won the game!!!</p>
+                        {% endif %}
+                        {% if gameover %}
+                            <p>GAME OVER!!!</p>
+                        {% endif %}
+                        <div class="mx-auto text-center">
+                            <img class="img-fluid" src="{{ gameStatus.image }}" width="50%"    alt="">
+                        </div>
+                    </section>
+                    {% endif %}
+                {% else %}
+                    <div class="col-md-4 mx-auto">
+                        <h2>Login</h2>
+                        <p>Don't tell anyone that there are three users in the system "user1", "user2" and "user3". All of them with the same password "pass".</p>
+                        <form method="POST" action="{{ url_for('login') }}" class="form-check" >
+                            <label for="username">Username:</label>
+                            <input type="text" id="username" name="username" required class="form-control {% if bad_username %}is-invalid{% endif %}" autofocus>
+                            <br>
+                            <label for="password">Password:</label>
+                            <input type="password" id="password" name="password" required class="form-control {% if bad_username %}is-invalid{% endif %}">
+                            <br>
+                            <button type="submit">Login</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"

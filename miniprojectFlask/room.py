@@ -1,7 +1,7 @@
 import gate, item
 
 class Room:
-    def __init__(self, name, description, items, units) -> None:
+    def __init__(self, name, description, items, units, image) -> None:
         self.name = name
         self.description = description
         self.items = items
@@ -10,6 +10,7 @@ class Room:
         self.rooms = []
         self.enterRequirements = []
         self.hiddenUnless = []
+        self.image = image
         pass
 
     def to_dict(self):
@@ -19,6 +20,12 @@ class Room:
                 'units': [obj.name for obj in self.units],
                 #'enterRequirements': self.enterRequirements
                 }
+    
+    def getEnemies(self):
+        return [obj for obj in self.units if not obj.isFriendly]
+    
+    def getAllies(self):
+        return [obj for obj in self.units if obj.isFriendly]
 
     def addRoom(self, room):
         self.rooms.append(room)

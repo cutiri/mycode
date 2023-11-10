@@ -6,6 +6,8 @@ class GameStatus:
         self.companions = []
         self.currentRoom = None
         self.message = []
+        self.hp = 100
+        self.image = ""
     
     def convert_to_dict(obj):
         if isinstance(obj, GameStatus):
@@ -13,6 +15,8 @@ class GameStatus:
     
     def convert_to_JSON(self):
         return json.dumps(self, cls=customJSONencoder.CustomJSONEncoder, indent = 2)
+    
+
 
 
 

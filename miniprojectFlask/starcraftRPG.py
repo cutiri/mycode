@@ -81,8 +81,9 @@ class StarCraftRPG:
         action = moveList[0]
         target = moveList[1] if len(moveList) > 1 else ""
         if action:
-            keys = [item for item in self.commands.keys() if item.startswith(action)]
-            result = {index: value for index, value in enumerate(keys)}
+            #keys = [item for item in self.commands.keys() if item.startswith(action)]
+            #result = {index: value for index, value in enumerate(keys)}
+            result = {"results": []}
             print(result)
             return result
 

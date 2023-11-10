@@ -24,6 +24,37 @@ class StarCraft:
             cheatCommand.trigger: cheatCommand,
         }
 
+    def are_we_dead(self):
+        return self.gameStatus.hp <= 0
+    
+    def have_we_won(self):
+        return len(self.initializer.finalRoom.units) == 0
+
+    def autocomplete(self, param):
+        
+        moveList = param.lower().split(" ", 1)
+        action = moveList[0]
+        target = moveList[1] if len(moveList) > 1 else ""
+
+        print(action, " - ", target)
+        if action and not target:
+            keys = [item for item in self.commands.keys() if item.startswith(action) and item != action]
+            result = { "results": keys}
+            return result
+        if target:
+            if action == 'go':
+                results = [(action + " " + obj.direction) for obj in self.gameStatus.currentRoom.gates]
+                return { "results": results}
+            if action == 'get':
+                results = [(action + " " + obj.name) for obj in self.gameStatus.currentRoom.items]
+                return { "results": results}
+            if action == 'attack':
+                results = [(action + " " + obj.name) for obj in self.gameStatus.currentRoom.getEnemies()]
+                return { "results": results}
+            if action == 'assist':
+                results = [(action + " " + obj.name) for obj in self.gameStatus.currentRoom.getAllies()]
+                return { "results": results}
+        return None
         
 
     def execute_command(self, command):
@@ -34,13 +65,14 @@ class StarCraft:
         if action in self.commands:
             self.gameStatus.message = self.commands[action].method(target)
         else:
-            self.gamestatus.message = [action + " is not a valid command"]
+            self.gameStatus.message = [action + " is not a valid command"]
         return self.gameStatus
 
     def start_game(self):
         self.initializer = gameInitializer.GameInitializer()
         self.gameStatus = gamestatus.GameStatus()
         self.gameStatus.currentRoom = self.initializer.mainRoom
+        self.gameStatus.image = self.initializer.mainRoom.image
         return self.gameStatus
 
     ################################ COMMANDS ########################################
@@ -49,7 +81,9 @@ class StarCraft:
         gate = self.gameStatus.currentRoom.getGateByName(param)
         if gate:
             if gate.canOpen(self.gameStatus.inventory):
-                self.gameStatus.currentRoom = self.gameStatus.currentRoom.getGateByName(param).room
+                nextRoom = self.gameStatus.currentRoom.getGateByName(param).room
+                self.gameStatus.currentRoom = nextRoom
+                self.gameStatus.image = nextRoom.image
                 return []
             else:
                 return ["You can't go there..."]
@@ -75,7 +109,7 @@ class StarCraft:
             #self.message = ["You can't attack allied units, are you out of your mind?"]
             return ["You can't attack allied units, are you out of your mind?"]
         elif not targetUnit.attack(self.gameStatus.inventory, self.gameStatus.companions):
-            self.hp = -1
+            self.gameStatus.hp = -1
             return targetUnit.failedInteractionMessage
         else:
             self.gameStatus.currentRoom.units.remove(targetUnit)
@@ -108,17 +142,17 @@ class StarCraft:
         message = ["--------------------------------------------------------------------------"]
         
         for key, value in self.commands.items():
-            message.append(key + ": " + value.help)
+            message.append('<b>'+ key + ": </b>" + value.help)
         message.append("--------------------------------------------------------------------------")
         return message
     
     def cheatCommand(self, param):
         if param.lower() == "show me the money":
-            self.gameStatus.inventory = self.inventory + self.init.items
-            self.gameStatus.companions = self.companions + self.init.companions
+            self.gameStatus.inventory = self.gameStatus.inventory + self.initializer.items
+            self.gameStatus.companions = self.gameStatus.companions + self.initializer.companions
             return ["Get all those items and companions."]
         if param.lower() == "there is no cow level":
-            self.gameStatus.currentRoom = self.init.bunker
+            self.gameStatus.currentRoom = self.initializer.finalRoom
             return ["Go! Go! Go!"]
         return ["You can't even cheat right"]
     ################################ COMMANDS ########################################

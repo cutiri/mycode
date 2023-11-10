@@ -55,13 +55,16 @@ def getUsername():
 def startNewGame(username):
     gamesDictionary[username] = starcraft.StarCraft()
 
-def checkEndingGameConditions():
-    pass
-
 # Main function
 @app.route("/")
 def home():
-    return render_template("index.html", gameStatus = getGameStatus(getUsername()))
+    if getGame() and getGame().are_we_dead():
+        getGameStatus(getUsername()).image = "https://media3.giphy.com/media/WyrdDeIxGOlQA/giphy.gif"
+    if getGame() and getGame().have_we_won():
+        getGameStatus(getUsername()).image = "https://i.pinimg.com/originals/22/f9/1e/22f91e88cee06c9cc34d4da9bf1cd31d.jpg"
+    return render_template("index.html", gameStatus = getGameStatus(getUsername()), 
+                           won = getGame().have_we_won() if getGame() else False, 
+                           gameover = getGame().are_we_dead() if getGame() else False)
 
 # Javascript files
 @app.route("/js/<name>")
@@ -90,6 +93,14 @@ def login():
             bad_username = True
     return render_template("index.html", bad_username = bad_username)  # Create a login.html template with your login form
 
+def run_command(command):
+    setGameStatus(getUsername(), getGame().execute_command(command))
+
+@app.route('/help')
+def help():
+    run_command('help')
+    return redirect(url_for('home'))
+
 @app.route('/logout')
 def logout():
     session.pop('username', None)
@@ -102,9 +113,10 @@ def newgame():
 
 @app.route("/api/autocomplete/<text>")
 def autocomplete(text):
-    input_list = game.autocomplete(text)
+    input_list = getGame().autocomplete(text)
     #return { 'response': {input_list[i]: input_list[i + 1] for i in range(0, len(input_list), 2)}}
-    return input_list
+    print(input_list)
+    return jsonify(input_list)
 
 @app.route("/api/command/", methods=['POST'])
 def command():

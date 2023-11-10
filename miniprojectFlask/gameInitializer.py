@@ -53,12 +53,12 @@ class GameInitializer:
             color.Color.PURPLE + "Sarah:" + color.Color.RESET + " Commander? Jim? What the hell is going on up there? .... *radio silence*"
         ])
 
-        battlecruiser = room.Room("Battle Crusier", "A standard Terran Battlecruiser orbiting planet Tarsonis.", [marineSuit], [])
-        startport = room.Room("Startport", "You are inside the main startport on planet Tarsonis.", [rifle], [])
-        nursery = room.Room("Nursery", "A classic terran nursery with some med kits", [stimpack], [])
-        refinery = room.Room('Refinery', "A huge vespen gas refinery", [khaydarin], [zerglings])
-        barracks = room.Room("Barracks", "Laying in the ground you can see several soldiers injured.", [], [marine, firebat])
-        bunker = room.Room("Bunker", "A bunker with huge hole on the side probably made by a Zerg's Guardian", [], [hydralisk])
+        battlecruiser = room.Room("Battle Crusier", "A standard Terran Battlecruiser orbiting planet Tarsonis.", [marineSuit], [], "https://legendary-digital-network-assets.s3.amazonaws.com/wp-content/uploads/2019/07/13093945/STARCRAFT_TERRAN_BATTLECRUISER_SHIP_ENV2_HEADER.png")
+        startport = room.Room("Startport", "You are inside the main startport on planet Tarsonis.", [rifle], [], "https://artistmonkeys.com/wp-content/uploads/2023/10/Starcraft-Terran-versus-Zerg-4.jpg")
+        nursery = room.Room("Nursery", "A classic terran nursery with some med kits", [stimpack], [], "https://cdnb.artstation.com/p/assets/images/images/035/511/313/large/daria-frealyr-kovalenko-imgonline-com-ua-compressbysize-ajuy5f3lvtoljqrq.jpg")
+        refinery = room.Room('Refinery', "A huge vespen gas refinery", [khaydarin], [zerglings], "https://oyster.ignimgs.com/mediawiki/apis.ign.com/starcraft-2/1/10/Terrans.jpg")
+        barracks = room.Room("Barracks", "Laying in the ground you can see several soldiers injured.", [], [marine, firebat], "https://i.redd.it/t4gq5vrx2hi31.png")
+        bunker = room.Room("Bunker", "A bunker with huge hole on the side probably made by a Zerg's Guardian", [], [hydralisk], "https://www.wired.com/images_blogs/gamelife/2013/03/artwork-jim-raynor-660.jpg")
 
         battlecruiser.addGate(gate.Gate("down", startport, [marineSuit], []))
         startport.addGate(gate.Gate("north", barracks, [], []))
@@ -74,6 +74,7 @@ class GameInitializer:
 
         self.items = [khaydarin, keycard, rifle, stimpack, marineSuit]
         self.companions = [marine, firebat]
+        self.enemies = [zerglings, hydralisk]
         self.mainRoom = battlecruiser
         self.finalRoom = bunker
         self.rooms = [battlecruiser, startport, nursery, refinery, barracks, bunker]
