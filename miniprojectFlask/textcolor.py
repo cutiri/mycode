@@ -1,11 +1,11 @@
 class Color:
-    RESET = "\033[0m"
-    RED = RESET + "\033[91m"
-    GREEN = RESET + "\033[92m"
-    YELLOW = RESET + "\033[93m"
-    BLUE = RESET + "\033[94m"
-    PURPLE = RESET + "\033[95m"
-    CYAN = RESET + "\033[96m"
-    MAGENTA = RESET + "\033[35m"
-    LIGHT_GRAY = RESET + "\033[37m"
-    DARK_GRAY = RESET + "\033[90m"
+    RESET = '<span>'
+    RED = RESET + '<span style="color: red;">'
+    GREEN = RESET + '<span style="color: green;">'
+    YELLOW = RESET + '<span style="color: yellow;">'
+    BLUE = RESET + '<span style="color: blue;">'
+    PURPLE = RESET + '<span style="color: purple;">'
+    CYAN = RESET + '<span style="color: cyan;">'
+    MAGENTA = RESET + '<span style="color: magenta;">'
+    LIGHT_GRAY = RESET + '<span style="color: gray;">'
+    DARK_GRAY = RESET + "</span>"

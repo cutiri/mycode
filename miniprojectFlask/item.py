@@ -16,3 +16,11 @@ class Item:
 
     def __repr__(self) -> str:
         return self.name
+    
+    def to_dict(self):
+        return {
+            'name': self.name, 
+            'description': self.description,
+            'message': [obj for obj in self.message],
+            #'enterRequirements': self.enterRequirements
+        }

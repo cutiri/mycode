@@ -12,6 +12,14 @@ class Room:
         self.hiddenUnless = []
         pass
 
+    def to_dict(self):
+        return {'name': self.name, 
+                'description': self.description,
+                'items': [item.to_dict() for item in self.items],
+                'units': [obj.name for obj in self.units],
+                #'enterRequirements': self.enterRequirements
+                }
+
     def addRoom(self, room):
         self.rooms.append(room)
 

@@ -1,8 +1,10 @@
-import item, room, gate, command, unit, textcolor as color
+import item, room, gate, command, unit, gamestatus, textcolor as color
+import pprint
 
+class StarCraftSingleton:
+    _instance = None  # Class variable to store the instance
 
-class GameInitializer:
-    def __init__(self) -> None:
+    def __init__(self):
         khaydarin = item.Item("crystal", "A piece of Khaydarin Crystal, it's blue and shinny", ["You pick up the crystal, it is blue and shinny"])
         keycard = item.Item("Key Card", "A bloody key card, a name is still visible, it belonged to Edmund Duke", 
                             ["You pick up the card, it still has rests of blood on it and you can read a name Edmund Duke"])
@@ -53,6 +55,8 @@ class GameInitializer:
             color.Color.PURPLE + "Sarah:" + color.Color.RESET + " Commander? Jim? What the hell is going on up there? .... *radio silence*"
         ])
 
+        
+
         battlecruiser = room.Room("Battle Crusier", "A standard Terran Battlecruiser orbiting planet Tarsonis.", [marineSuit], [])
         startport = room.Room("Startport", "You are inside the main startport on planet Tarsonis.", [rifle], [])
         nursery = room.Room("Nursery", "A classic terran nursery with some med kits", [stimpack], [])
@@ -69,6 +73,15 @@ class GameInitializer:
         refinery.addGate(gate.Gate("east", startport, [], []))
         refinery.addGate(gate.Gate("south", bunker, [keycard], []))
 
+        helpCommand = command.Command("help", self.helpCommand, "It will display this help menu")
+        goCommand = command.Command("go", self.goCommand, "Go to a direction. e.g. 'go south'")
+        getCommand = command.Command("get", self.getCommand, "You will get an object from the room. e.g. 'get key'")
+        attackCommand = command.Command("attack", self.attackCommand, "You will attack an enemy unit. e.g. 'attack zerglingsassist'")
+        assistCommand = command.Command("assist", self.assistCommand, "You will assist an ally unit. e.g. 'assist medic'")
+        cheatCommand = command.Command("cheat", self.cheatCommand, "Don't do it Jimmy! She is a monster!")
+
+        
+
         self.winningMessage = color.Color.CYAN + "Congratulations! You were able to assist Sarah! Wasn't that hard right? Right Blizzard?" + color.Color.RESET
         self.looseMessage = color.Color.CYAN + "----- GAME OVER -----" + color.Color.RESET
 
@@ -76,8 +89,125 @@ class GameInitializer:
         self.companions = [marine, firebat]
         self.mainRoom = battlecruiser
         self.finalRoom = bunker
-        self.rooms = [battlecruiser, startport, nursery, refinery, barracks, bunker]
+
+        self.commands = {
+            goCommand.trigger: goCommand,
+            getCommand.trigger: getCommand,
+            attackCommand.trigger: attackCommand,
+            assistCommand.trigger: assistCommand,
+            helpCommand.trigger: helpCommand,
+            cheatCommand.trigger: cheatCommand,
+        }
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            # Create a new instance if it doesn't exist
+            cls._instance = super(StarCraft, cls).__new__(cls)
+        return cls._instance
+
+    @classmethod
+    def get_instance(cls):
+        if not cls._instance:
+            # Create a new instance if it doesn't exist
+            cls._instance = cls()
+        return cls._instance
+
+    @staticmethod
+    def execute_command(command, gamestatus):
+        # Some static method logic here
+        instance = StarCraft.get_instance().finalRoom
+
+        moveList = command.lower().split(" ", 1)
+        action = moveList[0]
+        target = moveList[1] if len(moveList) > 1 else ""
+        
+        if action in self.commands:
+            instance.commands[action].method(target, gamestatus.inventory, gamestatus.currentRoom, gamestatus.companions)
+        else:
+            instance.message = [action + " is not a valid command"]
+        return instance
+
+    @staticmethod
+    def start_game():
+        instance = StarCraft.get_instance()
+        result = gamestatus.GameStatus()
+        result.currentRoom = instance.mainRoom.name
+        return result
+
+    ################################ COMMANDS ########################################
+    ### ALL COMMANDS WILL RETURN THE MESSAGE
+    def goCommand(self, param, inventory, currentRoom, companions):
+        gate = currentRoom.getGateByName(param)
+        if gate:
+            if gate.canOpen(inventory):
+                currentRoom = currentRoom.getGateByName(param).room
+            else:
+                return ["You can't go there..."]
+        else:
+            return ["That is not a valid direction, try again."]
+
+    def getCommand(self, param, inventory, currentRoom, companions):
+        print('get with param' + param)
+        item = self.currentRoom.getItemByName(param)
+        if item:
+            self.inventory.append(item)
+            self.currentRoom.items.remove(item)
+            return item.message
+        else:
+            return ["There is nothing with that name"]
+            
+    
+    def attackCommand(self, param):
+        targetUnit = self.currentRoom.getUnitByName(param)
+        if not targetUnit:
+            self.message = ["Are you sure you typed that right?"]
+        elif targetUnit.isFriendly:
+            self.message = ["You can't attack allied units, are you out of your mind?"]
+        elif not targetUnit.attack(self.inventory, self.companions):
+            self.message = targetUnit.failedInteractionMessage
+            self.hp = -1
+        else:
+            self.message = targetUnit.successfulInteractionMessage
+            self.currentRoom.units.remove(targetUnit)
+            self.currentRoom.items += targetUnit.drop
+
+    def assistCommand(self, param):
+        targetUnit = self.currentRoom.getUnitByName(param)
+        if not targetUnit:
+            self.message = ["Are you sure you typed that right?"]
+        elif not targetUnit.isFriendly:
+            self.message = ["You can't assist enemy units"]
+        elif not targetUnit.assist(self.inventory):
+            self.message = targetUnit.failedInteractionMessage
+        else:
+            self.message = targetUnit.successfulInteractionMessage
+            self.companions.append(targetUnit)
+            self.currentRoom.units.remove(targetUnit)
+            for item in targetUnit.needs:
+                self.inventory.remove(item)
+            
+
+    def helpCommand(self, param):
+        self.message = ["--------------------------------------------------------------------------"]
+        
+        for key, value in self.commands.items():
+            self.message.append(key + ": " + value.help)
+        self.message.append("--------------------------------------------------------------------------")
+    
+    def cheatCommand(self, param):
+        if param.lower() == "show me the money":
+            self.inventory = self.inventory + self.init.items
+            self.companions = self.companions + self.init.companions
+        if param.lower() == "there is no cow level":
+            self.currentRoom = self.init.bunker
+    ################################ COMMANDS ########################################
 
 
-    def winningConditionsMet(self):
-        return len(self.bunker.units) == 0
+if __name__ == "__main__":
+    obj1 = StarCraft.get_instance()
+    obj2 = StarCraft.get_instance()
+    obj3 = StarCraft()
+    pprint.pprint(obj1 is obj3)
+    #print(StarCraft.some_static_method())
+
+    print(StarCraft.start_game().convert_to_JSON())
