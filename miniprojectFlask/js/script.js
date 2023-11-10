@@ -1,5 +1,6 @@
 //const API_URL = "http://127.0.0.1:2224/api";
-const API_URL = "https://aux1-3cc49d54-2d5b-4ae0-bb2f-26a05a442f54.live.alta3.com/api"
+//const API_URL = "https://aux1-3cc49d54-2d5b-4ae0-bb2f-26a05a442f54.live.alta3.com/api"
+const API_URL = "/api"
 const sendBtn = document.getElementById("send_btn");
 const mainInput = document.getElementById("command");
 let inputText = "";
