@@ -55,6 +55,9 @@ def getUsername():
 def startNewGame(username):
     gamesDictionary[username] = starcraft.StarCraft()
 
+def checkEndingGameConditions():
+    pass
+
 # Main function
 @app.route("/")
 def home():
@@ -92,7 +95,10 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('home'))
 
-
+@app.route('/newgame')
+def newgame():
+    startNewGame(getUsername())
+    return redirect(url_for('home'))
 
 @app.route("/api/autocomplete/<text>")
 def autocomplete(text):
@@ -103,10 +109,9 @@ def autocomplete(text):
 @app.route("/api/command/", methods=['POST'])
 def command():
     command = request.form['command']
-    #gameStatus = starcraft.execute_command(command)
     setGameStatus(getUsername(), getGame().execute_command(command))
-    #print(getGameStatus(getUsername()).convert_to_JSON())
-    return render_template("index.html", gameStatus = getGameStatus(getUsername()))
+    #return render_template("index.html", gameStatus = getGameStatus(getUsername()))
+    return redirect(url_for('home'))
 
 @app.route("/api/room/<name>")
 def room(name):

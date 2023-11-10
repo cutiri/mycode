@@ -45,10 +45,10 @@ class GameInitializer:
             "You finish putting on the combat suit. Suddenly, the radio crackles to life, and a familiar voice emerges from the speakers.",
             color.Color.PURPLE + "Sarah:" + color.Color.RESET + " This is Kerrigan, there are zergs advancing to our positions, we need immediat evac!",
             color.Color.BLUE + "Mengsk:" + color.Color.RESET + " Belay that order! We are moving out!",
-            color.Color.CYAN + "James (You):" + color.Color.RESET + " *with anger* 'What! You are not just gonna leave them!'",
+            color.Color.MAGENTA + "James (You):" + color.Color.RESET + " *with anger* 'What! You are not just gonna leave them!'",
             color.Color.BLUE + "Mengsk:" + color.Color.RESET + " All ships prepare to move away from Tarsonis on my mark",
             color.Color.PURPLE + "Sarah:" + color.Color.RESET + " *shots and zerglings screams*... 'Uh, boys. How about that evac?'",
-            color.Color.CYAN + "James (You):" + color.Color.RESET + " Damn you Arcturus, Don't do this!",
+            color.Color.MAGENTA + "James (You):" + color.Color.RESET + " Damn you Arcturus, Don't do this!",
             color.Color.BLUE + "Mengsk:" + color.Color.RESET + " It's done! Helmsman, signal the fleet and take us out of orbit. Now!",
             color.Color.PURPLE + "Sarah:" + color.Color.RESET + " Commander? Jim? What the hell is going on up there? .... *radio silence*"
         ])
